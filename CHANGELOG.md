@@ -2,13 +2,14 @@
 
 ## Changes
 
-### Unreleased
+### 0.2.0 — 2026-10-22
 - Redesigned the dashboard, settings, and activity log screens with a lighter interface and simpler navigation
 - Added an SMS Sender for Ethiopia startup splash screen and matching Android presplash
 - Added SMS Sender for Ethiopia launcher icons and README screenshots
 - Replaced inherited donation/demo promotion with fork-specific setup and Ethiopia-focused product documentation
 - Documented the future SMS management system roadmap; contacts, groups, campaigns, and web management are not implemented in this release
 - Preserved the existing SMS and API behavior
+- Source-only GitHub release; no Android APK is attached
 
 ### 0.1.1
 - Fixing app crash on some mobile GPU with kivymd 2.x . Thanks to [DorDeorz](https://github.com/DorDeorz) for the fix in [UniversalDownlaoder](https://github.com/DorDeorz/UniversalDownloader).

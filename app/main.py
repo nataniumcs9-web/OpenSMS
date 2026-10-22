@@ -75,7 +75,7 @@ class MainScreenBox(MDBoxLayout):
                 self.bottom_pad = 48
 
 ## Global definitions
-__version__ = "0.1.1" # App version
+__version__ = "0.2.0" # App version
 
 # Determine the base path for your application's resources
 if getattr(sys, 'frozen', False):
