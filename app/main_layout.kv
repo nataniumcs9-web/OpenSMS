@@ -1,4 +1,3 @@
-#:import parse_color kivy.parser.parse_color
 #:import AppHomeBox screens.mainScr.AppHomeBox
 #:import SettingsBox screens.settings.SettingsBox
 #:import LogBox screens.logs.LogBox
@@ -9,101 +8,150 @@
     MDNavigationItemLabel:
         text: root.text
 
+<SplashScreen@MDBoxLayout>:
+    orientation: "vertical"
+    spacing: "16dp"
+    padding: "36dp"
+    theme_bg_color: "Custom"
+    md_bg_color: "#12243F"
+    Widget:
+        size_hint_y: 1
+    MDCard:
+        orientation: "vertical"
+        size_hint: None, None
+        size: "96dp", "96dp"
+        pos_hint: {"center_x": 0.5}
+        radius: [28, 28, 28, 28]
+        theme_bg_color: "Custom"
+        md_bg_color: "#168B68"
+        MDLabel:
+            text: "SMS"
+            font_style: "Title"
+            role: "large"
+            bold: True
+            halign: "center"
+            theme_text_color: "Custom"
+            text_color: "#FFFFFF"
+    MDLabel:
+        text: "SMS Sender\nfor Ethiopia"
+        font_style: "Headline"
+        role: "large"
+        halign: "center"
+        theme_text_color: "Custom"
+        text_color: "#FFFFFF"
+        adaptive_height: True
+    MDLabel:
+        text: "A simple SMS gateway for your Android device"
+        font_style: "Body"
+        role: "medium"
+        halign: "center"
+        theme_text_color: "Custom"
+        text_color: "#BDCADB"
+        adaptive_height: True
+    Widget:
+        size_hint_y: 1
+
 MDScreen:
-    md_bg_color: self.theme_cls.backgroundColor
+    md_bg_color: "#F5F7FB"
 
-    MainScreenBox: # main container
-        id: main_scr_box
-        orientation: 'vertical'
-        padding: 0 , self.top_pad, 0, 0
-        #spacing: dp(4)
+    MDFloatLayout:
+        MainScreenBox:
+            id: main_scr_box
+            orientation: "vertical"
+            padding: 0, self.top_pad, 0, 0
+            opacity: 0
+            disabled: True
 
-        MDTopAppBar:
-            type: "small"
-            theme_bg_color: "Custom"
-            md_bg_color: '#0a3580'
-            pos_hint: {"top": 1}
+            MDTopAppBar:
+                type: "small"
+                theme_bg_color: "Custom"
+                md_bg_color: "#F5F7FB"
+                pos_hint: {"top": 1}
 
-            MDTopAppBarLeadingButtonContainer:
-                MDActionTopAppBarButton:
-                    icon: "menu"
-                    color: "white"
-                    on_release: nav_drawer.set_state("toggle")
-                MDActionTopAppBarButton:
-                    id: top_back_btn
-                    icon: "arrow-left"
-                    color: "white"
-                    opacity: 0
-                    disabled: True
-                    on_release: app.back_button_action()
-            MDTopAppBarTitle:
-                text: "OpenSMS"
-                color: "white"
-            MDTopAppBarTrailingButtonContainer:
-                MDActionTopAppBarButton:
-                    id: right_dot_menu
-                    icon: "dots-vertical"
-                    color: "white"
-                    opacity: 0
-                    disabled: True
+                MDTopAppBarLeadingButtonContainer:
+                    MDActionTopAppBarButton:
+                        icon: "menu"
+                        theme_text_color: "Custom"
+                        text_color: "#17345C"
+                        on_release: nav_drawer.set_state("toggle")
+                    MDActionTopAppBarButton:
+                        id: top_back_btn
+                        icon: "arrow-left"
+                        theme_text_color: "Custom"
+                        text_color: "#17345C"
+                        opacity: 0
+                        disabled: True
+                        on_release: app.back_button_action()
+                MDTopAppBarTitle:
+                    text: "SMS Sender"
+                    theme_text_color: "Custom"
+                    text_color: "#17345C"
+                MDTopAppBarTrailingButtonContainer:
+                    MDActionTopAppBarButton:
+                        id: right_dot_menu
+                        icon: "dots-vertical"
+                        theme_text_color: "Custom"
+                        text_color: "#17345C"
+                        opacity: 0
+                        disabled: True
 
-        MDFloatLayout:
+            MDFloatLayout:
+                MDNavigationLayout:
+                    MDScreenManager:
+                        id: screen_manager
 
-            MDNavigationLayout:
+                        MDScreen:
+                            name: "SMS"
+                            on_enter: app.on_main_screen_entry()
+                            AppHomeBox:
+                                id: home_scr
+                                padding: 8, 2, 8, (main_scr_box.bottom_pad + btm_nav_bar.height + 2)
 
-                MDScreenManager:
-                    id: screen_manager
+                        MDScreen:
+                            name: "Settings"
+                            on_enter: app.on_settings_entry()
+                            SettingsBox:
+                                id: settings_scr
+                                padding: 8, 2, 8, (main_scr_box.bottom_pad + btm_nav_bar.height + 2)
 
-                    MDScreen:
-                        name: "SMS"
-                        on_enter: app.on_main_screen_entry()
-                        AppHomeBox:
-                            id: home_scr
-                            padding: 8, 2, 8, (main_scr_box.bottom_pad + btm_nav_bar.height + 2)
+                        MDScreen:
+                            name: "Logs"
+                            on_enter: log_scr.log_show(right_dot_menu, top_back_btn)
+                            on_leave: log_scr.on_log_scr_exit(right_dot_menu)
+                            LogBox:
+                                id: log_scr
+                                padding: 8, 2, 8, (main_scr_box.bottom_pad + btm_nav_bar.height + 2)
 
-                    MDScreen:
-                        name: "Settings"
-                        on_enter: app.on_settings_entry()
-                        SettingsBox:
-                            id: settings_scr
-                            padding: 8, 2, 8, (main_scr_box.bottom_pad + btm_nav_bar.height + 2)
+                    MDNavigationDrawer:
+                        id: nav_drawer
+                        radius: 0, dp(16), dp(16), 0
 
-                    MDScreen:
-                        name: "Logs"
-                        on_enter: log_scr.log_show(right_dot_menu, top_back_btn)
-                        on_leave: log_scr.on_log_scr_exit(right_dot_menu)
-                        LogBox:
-                            id: log_scr
-                            padding: 8, 2, 8, (main_scr_box.bottom_pad + btm_nav_bar.height + 2)
+                        MDNavigationDrawerMenu:
+                            MDNavigationDrawerLabel:
+                                text: "Workspace"
+                            MDNavigationDrawerItem:
+                                on_release: app.goto_logs_screen()
+                                MDNavigationDrawerItemLeadingIcon:
+                                    icon: "text-box-outline"
+                                MDNavigationDrawerItemText:
+                                    text: "Activity logs"
+                            MDNavigationDrawerDivider:
 
-                MDNavigationDrawer:
-                    id: nav_drawer
-                    radius: 0, dp(16), dp(16), 0
+                MDNavigationBar:
+                    id: btm_nav_bar
+                    pos: 0, main_scr_box.bottom_pad
+                    on_switch_tabs: app.on_switch_tabs(*args)
 
-                    MDNavigationDrawerMenu:
-                        MDNavigationDrawerLabel:
-                            text: "Operations"
-                        MDNavigationDrawerItem:
-                            on_release: app.goto_logs_screen()
-                            MDNavigationDrawerItemLeadingIcon:
-                                icon: "file"
-                            MDNavigationDrawerItemText:
-                                text: "Logs"
-                            #MDNavigationDrawerItemTrailingText:
-                            #    text: "24"
-                        MDNavigationDrawerDivider:
+                    BaseMDNavigationItem
+                        icon: "message-text-outline"
+                        text: "SMS"
+                        active: True
 
-            MDNavigationBar:
-                id: btm_nav_bar
-                pos: 0, main_scr_box.bottom_pad
-                on_switch_tabs: app.on_switch_tabs(*args)
+                    BaseMDNavigationItem
+                        icon: "tune-variant"
+                        text: "Settings"
 
-                BaseMDNavigationItem
-                    icon: "api"
-                    text: "SMS"
-                    active: True
-
-                BaseMDNavigationItem
-                    icon: "wrench"
-                    text: "Settings"
-
+        SplashScreen:
+            id: splash_screen
+            size_hint: 1, 1
+            opacity: 1

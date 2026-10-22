@@ -15,17 +15,48 @@ from kivy.utils import platform
 from services.logSvc import LogService
 
 Builder.load_string('''
-
 <LogBox>:
     orientation: "vertical"
+    padding: "18dp", "14dp", "18dp", "8dp"
+    spacing: "12dp"
+    canvas.before:
+        Color:
+            rgba: (0.96, 0.97, 0.99, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    MDBoxLayout:
+        orientation: "vertical"
+        adaptive_height: True
+        spacing: "2dp"
+        MDLabel:
+            text: "Activity logs"
+            font_style: "Headline"
+            role: "small"
+            theme_text_color: "Custom"
+            text_color: "#172B4D"
+            adaptive_height: True
+        MDLabel:
+            text: "Review recent activity from your SMS API."
+            font_style: "Body"
+            role: "small"
+            theme_text_color: "Custom"
+            text_color: "#68778D"
+            adaptive_height: True
 
     MDScrollView:
         do_scroll_x: False
+        bar_width: 0
 
-        MDBoxLayout:
+        MDCard:
             id: log_box
             orientation: "vertical"
             adaptive_height: True
+            padding: "16dp"
+            radius: [20, 20, 20, 20]
+            theme_bg_color: "Custom"
+            md_bg_color: "#FFFFFF"
 
             MDLabel:
                 id: log_container
@@ -34,6 +65,8 @@ Builder.load_string('''
                 text: "No logs yet!"
                 font_style: "Label"
                 role: "small"
+                theme_text_color: "Custom"
+                text_color: "#344563"
 
 ''')
 

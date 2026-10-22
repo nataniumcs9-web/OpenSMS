@@ -1,6 +1,6 @@
 <p align="center"><img width="20%" src="app/data/images/favicont512.png" /></p>
 
-# 📨 OpenSMS
+# 📨 SMS Sender for Ethiopia
 An open-source solution to host a `SMS` API server locally.
 
 ### 🤔 Why would you choose our app? (Features)
@@ -23,7 +23,7 @@ You can click on the below Image or this [Youtube Link](https://www.youtube.com/
 2. You may need to disable (temporarily) `Play Protect` from your `Play Store` settings.
 3. Install the App & launch.
 4. Grant the permissions.
-5. Android might block `sms` permission. Go to `Settings` > `Apps` > `OpenSMS` > Tap on three vertical-dots at top-right corner > `Allow restricted access`.
+5. Android might block `sms` permission. Go to `Settings` > `Apps` > `SMS Sender for Ethiopia` > Tap on three vertical-dots at top-right corner > `Allow restricted access`.
 6. Then grant `SMS` permission from the settings window.
 7. Relaunch the app. 
 8. Click `Start Server`. It will then prompt you to generate an API Key for the first time. Generate and store it securely.
@@ -48,6 +48,7 @@ It works on `Android` and will bring this to `Linux` & `Windows` too.
 ### 📋 Future plans
 
 1. Bring this SMS API option to Desktop platforms. We will leverage [Quectel EC200U](https://www.quectel.com/product/lte-ec200u-series/) based USB development boards to send SMS.
+2. Build a complete SMS management system with contacts, groups, sender identity, message campaigns, and an optional web dashboard. See the [management roadmap](docs/management-roadmap.md) for the proposed phases and open decisions. This is future work and is not included in the current app.
 
 -----
 

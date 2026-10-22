@@ -13,6 +13,7 @@ from kivy.core.window import Window
 from kivy.utils import platform
 from kivy.metrics import dp, sp
 from kivy.clock import Clock
+from kivy.animation import Animation
 from kivy.properties import StringProperty, NumericProperty, ObjectProperty, BooleanProperty, ColorProperty
 
 # debug
@@ -109,6 +110,7 @@ class OpenSmsApp(MDApp):
     def build(self):
         self.theme_cls.primary_palette = "Blue"
         self.theme_cls.accent_palette = "Orange"
+        self.theme_cls.theme_style = "Light"
         return Builder.load_file(kv_file_path)
 
     ## App logics
@@ -178,7 +180,19 @@ class OpenSmsApp(MDApp):
         if len(api_keys) >= 1:
             self.key_exists = True
         Thread(target=self.resp_check_loop, daemon=True).start()
+        Clock.schedule_once(self.dismiss_splash, 1.6)
         print("Init success...")
+
+    def dismiss_splash(self, dt=0):
+        splash = self.root.ids.splash_screen
+        fade = Animation(opacity=0, duration=0.3)
+        fade.bind(on_complete=lambda *_: self.show_main_screen())
+        fade.start(splash)
+
+    def show_main_screen(self):
+        self.root.ids.splash_screen.disabled = True
+        self.root.ids.main_scr_box.disabled = False
+        self.root.ids.main_scr_box.opacity = 1
 
     def start_service(self):
         PythonActivity = autoclass('org.kivy.android.PythonActivity')
@@ -188,7 +202,7 @@ class OpenSmsApp(MDApp):
         argument = os.environ.get('PYTHON_SERVICE_ARGUMENT', '')
         print(f"PYTHON_SERVICE_ARGUMENT: {argument}")
         #service.start(mActivity, argument)
-        service.start(mActivity, 'icon', 'OpenSMS API', 'Service Running' , argument)
+        service.start(mActivity, 'icon', 'SMS Sender for Ethiopia', 'Service Running' , argument)
 
     def stop_service(self):
         service = autoclass('in.daslearning.opensms.ServiceOpensmssvc')

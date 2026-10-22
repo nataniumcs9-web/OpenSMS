@@ -1,118 +1,166 @@
 from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.scrollview import MDScrollView
-from kivymd.uix.gridlayout import MDGridLayout
-from kivymd.uix.button import MDButton, MDButtonIcon, MDButtonText
-from kivymd.uix.textfield import MDTextField, MDTextFieldTrailingIcon
+from kivymd.uix.textfield import MDTextField
 
 from kivy.lang import Builder
-from kivy.uix.widget import Widget
-from kivy.properties import StringProperty, NumericProperty, ObjectProperty, ColorProperty
-from kivy.metrics import dp, sp
-from kivy.utils import platform
 
 Builder.load_string('''
-
 <ApiKeyTxtbox>:
     mode: "outlined"
     readonly: True
-    #MDTextFieldTrailingIcon:
-    #    icon: "content-copy"
-    #    on_release: app.copy_api_key()
 
 <SettingsBox>:
     orientation: "vertical"
-
-    MDBoxLayout:
-        orientation: "horizontal"
-        adaptive_height: True
-        adaptive_width: True
-        spacing: dp(2)
-        pos_hint: {"center_x": .5}
-
-        MDButton:
-            theme_bg_color: "Custom"
-            md_bg_color: "green"
-            on_release: app.save_settings(self)
-            MDButtonIcon:
-                icon: "floppy"
-                color: "white"
-            MDButtonText:
-                text: "Save"
-                color: "white"
-
-        MDButton:
-            theme_bg_color: "Custom"
-            md_bg_color: "black"
-            on_release: app.reset_settings(self)
-            MDButtonIcon:
-                icon: "undo"
-                color: "white"
-            MDButtonText:
-                text: "Reset"
-                color: "white"
+    padding: "18dp", "14dp", "18dp", "8dp"
+    canvas.before:
+        Color:
+            rgba: (0.96, 0.97, 0.99, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
 
     MDScrollView:
         do_scroll_x: False
+        bar_width: 0
 
         MDBoxLayout:
             id: main_scroll_bx
             orientation: "vertical"
             adaptive_height: True
+            spacing: "14dp"
 
-            MDListItem:
-                MDListItemLeadingIcon:
-                    icon: "rocket-launch"
-                MDListItemHeadlineText:
-                    text: "Auto Start API Server"
-                MDListItemSupportingText:
-                    text: "Starts when app is launched"
-                #MDListItemTertiaryText:
-                #    text: "Tertiary text"
-                MDSwitch:
-                    id: auto_start_sw
-                    pos_hint: {"center_y": 0.5}
-                    icon_active: "check"
-                    icon_inactive: "close"
-                    icon_active_color: "green"
-                    track_color_active: "green"
-                    #active: True
-                    on_release: app.save_settings(self, "switch")
+            MDBoxLayout:
+                orientation: "vertical"
+                adaptive_height: True
+                spacing: "2dp"
+                MDLabel:
+                    text: "Settings"
+                    font_style: "Headline"
+                    role: "small"
+                    theme_text_color: "Custom"
+                    text_color: "#172B4D"
+                    adaptive_height: True
+                MDLabel:
+                    text: "Keep your device gateway configured the way you need it."
+                    font_style: "Body"
+                    role: "small"
+                    theme_text_color: "Custom"
+                    text_color: "#68778D"
+                    adaptive_height: True
 
-            MDListItem:
-                MDListItemLeadingIcon:
-                    icon: "api"
-                MDListItemHeadlineText:
-                    text: "Port Number"
-                MDListItemSupportingText:
-                    text: "Needs a Stop-Start"
-                MDListItemTertiaryText:
-                    text: "Should be > 1024"
+            MDCard:
+                orientation: "vertical"
+                adaptive_height: True
+                padding: "8dp"
+                radius: [20, 20, 20, 20]
+                theme_bg_color: "Custom"
+                md_bg_color: "#FFFFFF"
+                MDListItem:
+                    MDListItemLeadingIcon:
+                        icon: "rocket-launch-outline"
+                    MDListItemHeadlineText:
+                        text: "Start server automatically"
+                    MDListItemSupportingText:
+                        text: "Start the API when the app opens"
+                    MDSwitch:
+                        id: auto_start_sw
+                        pos_hint: {"center_y": 0.5}
+                        icon_active: "check"
+                        icon_inactive: "close"
+                        icon_active_color: "#168B68"
+                        track_color_active: "#168B68"
+                        on_release: app.save_settings(self, "switch")
+
+            MDCard:
+                orientation: "vertical"
+                adaptive_height: True
+                padding: "16dp"
+                spacing: "8dp"
+                radius: [20, 20, 20, 20]
+                theme_bg_color: "Custom"
+                md_bg_color: "#FFFFFF"
+                MDLabel:
+                    text: "API port"
+                    font_style: "Title"
+                    role: "small"
+                    theme_text_color: "Custom"
+                    text_color: "#172B4D"
+                    adaptive_height: True
+                MDLabel:
+                    text: "Changing the port requires restarting the server."
+                    font_style: "Body"
+                    role: "small"
+                    theme_text_color: "Custom"
+                    text_color: "#68778D"
+                    adaptive_height: True
                 MDTextField:
                     id: port_no_inp
-                    mode: "filled"
-                    input_filter: 'int'
+                    mode: "outlined"
+                    input_filter: "int"
+                    hint_text: "Port number"
 
-            MDListItem:
-                MDListItemLeadingIcon:
-                    icon: "key"
-                MDListItemHeadlineText:
-                    text: "API Key"
-                MDListItemSupportingText:
-                    text: "Generate New API Key"
-                MDListItemTertiaryText:
-                    text: "Old key will not work"
+            MDCard:
+                orientation: "horizontal"
+                adaptive_height: True
+                padding: "16dp"
+                spacing: "10dp"
+                radius: [20, 20, 20, 20]
+                theme_bg_color: "Custom"
+                md_bg_color: "#FFFFFF"
+                MDBoxLayout:
+                    orientation: "vertical"
+                    adaptive_height: True
+                    spacing: "4dp"
+                    MDLabel:
+                        text: "API key"
+                        font_style: "Title"
+                        role: "small"
+                        theme_text_color: "Custom"
+                        text_color: "#172B4D"
+                        adaptive_height: True
+                    MDLabel:
+                        text: "Generate a new key to replace the current one."
+                        font_style: "Body"
+                        role: "small"
+                        theme_text_color: "Custom"
+                        text_color: "#68778D"
+                        adaptive_height: True
                 MDFabButton:
                     icon: "autorenew"
                     style: "small"
                     theme_bg_color: "Custom"
-                    md_bg_color: "orange"
-                    pos_hint: {'center_y': 0.5}
+                    md_bg_color: "#E8EFFA"
+                    pos_hint: {"center_y": 0.5}
                     on_release: app.new_api_key_pop()
 
+            MDBoxLayout:
+                adaptive_height: True
+                spacing: "10dp"
+                MDButton:
+                    style: "filled"
+                    theme_bg_color: "Custom"
+                    md_bg_color: "#17345C"
+                    on_release: app.save_settings(self)
+                    MDButtonIcon:
+                        icon: "content-save-outline"
+                        theme_text_color: "Custom"
+                        text_color: "#FFFFFF"
+                    MDButtonText:
+                        text: "Save changes"
+                        theme_text_color: "Custom"
+                        text_color: "#FFFFFF"
+                MDButton:
+                    style: "outlined"
+                    on_release: app.reset_settings(self)
+                    MDButtonIcon:
+                        icon: "restore"
+                    MDButtonText:
+                        text: "Reset"
 ''')
+
 
 class SettingsBox(MDBoxLayout):
     pass
+
 
 class ApiKeyTxtbox(MDTextField):
     pass
