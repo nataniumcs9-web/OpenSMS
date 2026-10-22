@@ -1,89 +1,62 @@
-<p align="center"><img width="20%" src="app/data/images/favicont512.png" /></p>
+# SMS Sender for Ethiopia
 
-# 📨 SMS Sender for Ethiopia
-An open-source solution to host a `SMS` API server locally.
+SMS Sender for Ethiopia is the Ethiopia-focused version of OpenSMS maintained in [this fork](https://github.com/nataniumcs9-web/OpenSMS). It turns a compatible Android phone and SIM into a locally controlled SMS gateway. An authenticated API client can request a text message; the Android device sends it using its SIM and Android SMS permission.
 
-### 🤔 Why would you choose our app? (Features)
-👉 Turns your `Android` phone into a SMS API server. <br>
-👉 Open-source, No advertisements and privacy focused.
+The app is designed for Ethiopian Android users, including use with Ethiopian phone numbers in `+251` international format. It is intended to send through a compatible Ethiopian SIM when the device, Android version, carrier service, and permissions support SMS. Testing with Ethiopian devices and carriers is still needed before claiming it works reliably across networks. Delivery, charges, and sender identity depend on the SIM, carrier, and device.
 
-## 💰 Sponsor Me
-You can buy me a coffee via [this link](https://www.paypal.com/paypalme/soomnathsdas) or tap on below image. Thank you 🙏. <br>
-<a href="https://www.paypal.com/paypalme/soomnathsdas"><img src="./docs/images/donate.svg" height="40"></a>
+## App screenshots
 
-## 📽️ Demo
-You can click on the below Image or this [Youtube Link](https://www.youtube.com/watch?v=wNXH_3onjfg) to see the demo. Please let me know in the comments, how do you feel about this App. <br>
+| Splash screen | SMS dashboard |
+| --- | --- |
+| ![SMS Sender for Ethiopia splash screen](docs/images/app-splash.png) | ![SMS Sender for Ethiopia dashboard](docs/images/app-dashboard.png) |
 
-<a href="https://www.youtube.com/watch?v=wNXH_3onjfg"><img src="docs/images/OpenSmsThumb.webp" width="70%"></a>
+| Settings | Activity logs |
+| --- | --- |
+| ![SMS Sender for Ethiopia settings](docs/images/app-settings.png) | ![SMS Sender for Ethiopia activity logs](docs/images/app-logs.png) |
 
-## 🧑‍💻 Quickstart Guide
+## Current features
 
-### 📱 Download & Run the Android App
-1. You can check the [Releases](https://github.com/daslearning-org/OpenSMS/releases) and downlaod the latest version of the android app on your phone.
-2. You may need to disable (temporarily) `Play Protect` from your `Play Store` settings.
-3. Install the App & launch.
-4. Grant the permissions.
-5. Android might block `sms` permission. Go to `Settings` > `Apps` > `SMS Sender for Ethiopia` > Tap on three vertical-dots at top-right corner > `Allow restricted access`.
-6. Then grant `SMS` permission from the settings window.
-7. Relaunch the app. 
-8. Click `Start Server`. It will then prompt you to generate an API Key for the first time. Generate and store it securely.
+- Android app for starting and stopping the SMS API service.
+- API-key protected `POST /sms/` endpoint.
+- Configurable API port and optional server auto-start.
+- Activity logs for API requests.
 
-### 🧪 Test API endpoint
-Find the network address of your device and you may test out the API. Sample given below.
+Contacts, contact groups, sender-name configuration, bulk campaigns, and a web management dashboard are not implemented yet.
+
+## Run the Android app
+
+Download an Android release from [this fork's releases page](https://github.com/nataniumcs9-web/OpenSMS/releases) when one is published. Install it on a compatible Android phone, grant its requested permissions, open the app, and start the server. On first use, generate an API key and store it securely.
+
+## Send a test SMS through the API
+
+Find the phone's local network address, keep the phone and API client on a trusted network, and replace the example API key and phone number:
 
 ```bash
 curl -i -X POST 'http://127.0.0.1:9292/sms/' \
     -H 'Content-Type: application/json' \
-    -H 'Authorization: Bearer my-secret-api-key' \
-    -d '{"number": "+1234567890", "text": "Hello from OpenSMS API!"}'
+    -H 'Authorization: Bearer YOUR_API_KEY' \
+    -d '{"number": "+2519XXXXXXXX", "text": "Hello from SMS Sender for Ethiopia!"}'
 ```
 
-## 📚 Tech Stack Used
+Use an international-format number with Ethiopia's `+251` country code for an Ethiopian destination. The API currently accepts a phone number and message text; it does not manage contacts, groups, campaigns, or custom sender names.
 
-### Python stack
-It works on `Android` and will bring this to `Linux` & `Windows` too.
-- [FastAPI](https://github.com/fastapi/fastapi) for the API layer.
-- [KivyMD](https://github.com/kivymd/kivymd) and few [Kivy](https://github.com/kivy) components for the UI and building the app.
+## Build from source
 
-### 📋 Future plans
-
-1. Bring this SMS API option to Desktop platforms. We will leverage [Quectel EC200U](https://www.quectel.com/product/lte-ec200u-series/) based USB development boards to send SMS.
-2. Build a complete SMS management system with contacts, groups, sender identity, message campaigns, and an optional web dashboard. See the [management roadmap](docs/management-roadmap.md) for the proposed phases and open decisions. This is future work and is not included in the current app.
-
------
-
-## 🧩 Building your app from code
-
-### 📱 Build Android App
-A Linux environment is recommended for the app development. If you are on Windows, you may use `WSL` or any `Virtual Machine`.
+The Android APK build is intended for Linux. On Windows, use WSL or a Linux virtual machine. Install the Android build dependencies described in [Buildozer's documentation](https://buildozer.readthedocs.io/), then:
 
 ```bash
-# add the python repository (Optional: if you want some other versions)
-sudo add-apt-repository ppa:deadsnakes/ppa
-sudo apt update
-
-# install all dependencies.
-sudo apt install -y ant autoconf automake ccache cmake g++ gcc lbzip2 libffi-dev libltdl-dev libtool libssl-dev make openjdk-17-jdk patch patchelf pkg-config unzip wget zip git python3 python3-venv python3-dev libcairo2-dev pkg-config libjpeg-dev zlib1g-dev
-
-# optionally you may check the java installation with below commands
-java -version
-javac -version
-
-# install python modules
-git clone https://github.com/daslearning-org/OpenSMS.git
+git clone https://github.com/nataniumcs9-web/OpenSMS.git
 cd OpenSMS/app
-python3 -m venv .env # create python virtual environment
-source .env/bin/activate
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r req_android.txt
-
-# build the android apk
-buildozer android debug # this may take a good amount of time for the first time & will generate the apk in the bin directory
+buildozer android debug
 ```
 
------
+The existing API and SMS behavior is based on [daslearning-org/OpenSMS](https://github.com/daslearning-org/OpenSMS). The original [Apache License 2.0](LICENSE) and upstream attribution are retained.
 
-### Linux Dependencies for build
-```bash
-sudo apt install libcairo2-dev pkg-config python3-dev
-sudo apt-get install libjpeg-dev zlib1g-dev
-```
+## Roadmap: build the SMS management system
+
+The next major product goal is to build a management system for Ethiopian SMS workflows. The phased plan covers local phone-number conventions, contact and group management, message composition, consent and opt-out handling, campaign controls, an optional web dashboard, and testing with Ethiopian devices and carrier SIMs.
+
+See the [SMS management system roadmap](docs/management-roadmap.md) for proposed phases and decisions to settle before implementation. These are planned features, not current functionality.
